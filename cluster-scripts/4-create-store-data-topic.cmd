@@ -1,1 +1,1 @@
-%KAFKA_HOME%\bin\windows\kafka-topics.bat --create --topic store-data --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --replication-factor 3 --partitions 3 --config min.insync.replicas=2
+%KAFKA_HOME%\bin\windows\kafka-topics.bat --create --topic store-data --bootstrap-server localhost:9092 --replication-factor 3 --partitions 3 --config min.insync.replicas=2

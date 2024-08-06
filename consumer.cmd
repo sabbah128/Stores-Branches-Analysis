@@ -1,0 +1,1 @@
+%KAFKA_HOME%\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --topic store-data --from-beginning

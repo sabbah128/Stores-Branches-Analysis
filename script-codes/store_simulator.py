@@ -12,6 +12,7 @@ class simulator_data:
 # # file_path = r'..\raw-data\store-raw-data.json'
 # if __name__ == "__main__":
 #     for record in simulator_data.read_json_records():
+#         print(f">>> Class type record {type(record)}")
 #         sleep(1)
 #         print(record["InvoiceNumber"])
 

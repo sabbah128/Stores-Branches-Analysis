@@ -1,26 +1,40 @@
-from time import sleep
-from json import dumps
-from kafka import KafkaProducer
+import json
+import time
+from confluent_kafka import Producer
 from store_simulator import simulator_data
-from kafka.errors import KafkaError
 
 
+config = {
+    'bootstrap.servers': 'localhost:9092,localhost:9093,localhost:9094',
+    'client.id': 'python-producer'}
+
+producer = Producer(config)
 TOPIC_NAME = 'store-data'
 
-# producer = KafkaProducer(bootstrap_servers=['localhost:9092', 'localhost:9093', 'localhost:9094'],
-#                         value_serializer=lambda x: dumps(x).encode('utf-8'),
-#                         key_serializer=str.encode)
+def delivery_report(err, msg):
+    if err is not None:
+        print(f'Message delivery failed: {err}')
+    else:
+        print(f'Message delivered to {msg.topic()}, [{msg.partition()}]')
 
-try:
-    producer = KafkaProducer(bootstrap_servers=['localhost:9092', 'localhost:9093', 'localhost:9094'],
-                             value_serializer=lambda x: dumps(x).encode('utf-8'),
-                             key_serializer=str.encode)
-except KafkaError as e:
-    print(f"Failed to connect to Kafka: {e}")
+def produce_messages():
+    try:
+        for record in simulator_data.read_json_records():
+            # print(f">>> Class type record {type(record)}")
+            json_data = json.dumps(record)
+            producer.produce(topic=TOPIC_NAME,
+                            key=str(record["InvoiceNumber"]),
+                            value=json_data, 
+                            callback=delivery_report)
+            # print(f">>> Class type json_data {type(json_data)}")
+            
+            print(f"Sent StoreID number: {str(record["InvoiceNumber"])}")
+            producer.poll(0)
+            time.sleep(0.1)
+    except Exception as e:
+        print(f"Error producing message: {e}")
 
+    producer.flush()
 
-for num in range(100):
-    data = simulator_data.read_json_records()
-    producer.send(TOPIC_NAME, value=data, key=data["InvoiceNumber"])
-    print(f"Sending Store ID data : {data['StoreID']}")
-    sleep(1)
+if __name__ == '__main__':
+    produce_messages()
