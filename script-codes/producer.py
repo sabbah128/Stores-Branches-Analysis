@@ -15,7 +15,7 @@ def delivery_report(err, msg):
     if err is not None:
         print(f'Message delivery failed: {err}')
     else:
-        print(f'Message delivered to {msg.topic()}, [{msg.partition()}]')
+        print(f'Message delivered to {msg.topic()}, {msg.key()}, [{msg.partition()}]')
 
 def produce_messages():
     try:
@@ -30,7 +30,7 @@ def produce_messages():
             
             print(f"Sent StoreID number: {str(record["InvoiceNumber"])}")
             producer.poll(0)
-            time.sleep(0.1)
+            time.sleep(5)
     except Exception as e:
         print(f"Error producing message: {e}")
 
