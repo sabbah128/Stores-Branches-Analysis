@@ -5,6 +5,7 @@ class simulator_data:
         with open(file_path, 'r') as file:
             data = json.load(file)
             for record in data:
+                # print(record)
                 yield record
 
 

@@ -6,7 +6,8 @@ from store_simulator import simulator_data
 
 config = {
     'bootstrap.servers': 'localhost:9092,localhost:9093,localhost:9094',
-    'client.id': 'python-producer'}
+    'client.id': 'python-producer'
+    }
 
 producer = Producer(config)
 TOPIC_NAME = 'store-data'
@@ -30,7 +31,7 @@ def produce_messages():
             
             print(f"Sent StoreID number: {str(record["InvoiceNumber"])}")
             producer.poll(0)
-            time.sleep(5)
+            time.sleep(10)
     except Exception as e:
         print(f"Error producing message: {e}")
 
@@ -38,3 +39,4 @@ def produce_messages():
 
 if __name__ == '__main__':
     produce_messages()
+    

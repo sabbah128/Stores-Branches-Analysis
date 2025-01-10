@@ -5,3 +5,5 @@ pip install --trusted-host https://mirror-pypi.runflare.com -i https://mirror-py
 log.segment.bytes=1073741824 -> 100000
 
 image: docker.arvancloud.ir/`<docker image name>`
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic second_topic --from-beginning
